@@ -21,7 +21,7 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-dark navbar-cute">
-  <a class="navbar-brand" href="#">KnitToys</a>
+  <a class="navbar-brand" href="?page=home">KnitToys</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03">
     <span class="navbar-toggler-icon"></span>
   </button>
