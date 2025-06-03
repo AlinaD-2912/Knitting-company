@@ -1,7 +1,7 @@
 <?php
 $page = isset($_GET['page']) ? $_GET['page'] : 'home'; // default page
 
-include 'includes/header.php';
+include 'header.php';
 
 switch ($page) {
   case 'catalogue':
@@ -26,5 +26,5 @@ switch ($page) {
     break;
 }
 
-include 'includes/footer.php';
+include 'footer.php';
 ?>
