@@ -6,3 +6,7 @@
     <button class="btn btn-cart-cute"><i class="bi bi-cart-plus"></i> Add to Cart</button>
   </div>
 </div>
+
+<div id="containerHome">
+
+</div>
