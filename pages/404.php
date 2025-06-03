@@ -1,6 +1,3 @@
-<?php 
-include("header.php");
-?>
 
 <div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 60vh;">
     <h1 class="display-4 text-danger">404</h1>
