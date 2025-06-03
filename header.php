@@ -31,7 +31,11 @@
         <ul class="navbar-nav mr-auto">
           <li class="nav-item"><a class="nav-link" href="?page=catalogue"><i class="bi bi-bag-heart"></i> Catalogue</a></li>
           <li class="nav-item"><a class="nav-link" href="?page=contact"><i class="bi bi-envelope-heart"></i> Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="?page=panier"><i class="bi bi-cart4"></i> Panier</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="?page=panier"><i class="bi bi-cart4"></i> Panier
+            <span id="cart-count" class="badge-cute">0</span>
+            </a>
+          </li>
 
         </ul>
         <form class="form-inline">

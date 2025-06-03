@@ -90,3 +90,13 @@
   background-color: #ffd54f;
   color: #000;
 }
+.badge-cute {
+  background-color: #ffe082;
+  color: #3f3f3f;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 6px;
+  vertical-align: top;
+}
