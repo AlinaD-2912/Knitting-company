@@ -1,11 +1,15 @@
 [
     {
-        "nom": "Subnautica 2",
+        "id": 1,
+        "nom": "",
         "description": "",
         "image": "images/",
-        "quantite": ""
-
-
-
+        "quantite": 0,
+        "largeur": 0,
+        "hauteur": 0,
+        "prix": 0,
+        "categorie": "peluche",
+        "materiaux": ["laine bio", "coton recyclé"],
+        "couleur": "beige et rose pastel"
     }
 ]
