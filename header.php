@@ -16,24 +16,29 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, #2196f3 0%, #21cbf3 100%);">
-            <a class="navbar-brand" href="#">Company</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <!-- Google Fonts for a playful look -->
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
 
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="?page=catalogue">Catalogue</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?page=contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?page=panier">Panier</a></li>
-                </ul>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search">
-                    <button class="btn btn-outline-light" type="submit">Search</button>
-                </form>
-            </div>
-        </nav>
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-cute">
+  <a class="navbar-brand" href="#">KnitToys</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="?page=catalogue">Catalogue</a></li>
+      <li class="nav-item"><a class="nav-link" href="?page=contact">Contact</a></li>
+      <li class="nav-item"><a class="nav-link" href="?page=panier">Panier</a></li>
+    </ul>
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search">
+      <button class="btn btn-outline-light" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
 
 
     </header>
