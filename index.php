@@ -1,5 +1,5 @@
 <?php
-$page = $_GET['page'] ?? 'home'; // default to home
+$page = isset($_GET['page']) ? $_GET['page'] : 'home'; // default page
 
 include 'includes/header.php';
 
