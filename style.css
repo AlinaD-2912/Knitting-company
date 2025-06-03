@@ -61,3 +61,17 @@
 .footer-cute .border-bottom {
   border-color: rgba(255, 255, 255, 0.3) !important;
 }
+
+.product-cute {
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  font-family: 'Quicksand', sans-serif;
+}
+.product-cute:hover {
+  transform: scale(1.03);
+}
+.product-cute .card-img-top {
+  border-radius: 20px 20px 0 0;
+}
