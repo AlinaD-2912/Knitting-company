@@ -10,6 +10,9 @@ switch ($page) {
   case 'product':
     include 'pages/product.php';
     break;
+  case 'panier':
+    include 'pages/panier.php';
+    break;
   case 'contact':
     include 'pages/contact.php';
     break;
