@@ -124,7 +124,7 @@ function loadCatalogueProducts() {
         img.alt = product.nom;
         dousiemeDiv.appendChild(img);
 
-        const title = document.createElement('h5');
+        const title = document.createElement('h4');
         title.className = 'card-title fw-semibold';
         title.textContent = product.nom;
 
