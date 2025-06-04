@@ -88,7 +88,6 @@ function addToCart() {
   document.getElementById('cart-count').textContent = cartCount;
 }
 
-// Optional: attach to all buttons with class 'btn-cart-cute'
 document.querySelectorAll('.btn-cart-cute').forEach(button => {
   button.addEventListener('click', function (e) {
     e.preventDefault(); // prevent page reload if needed
@@ -138,25 +137,21 @@ function loadCatalogueProducts() {
 
         const prix = document.createElement('p');
         prix.className = 'fw-bold text-primary mb-3';
-        prix.innerHTML = `Prix : ${product.prix}`
+        prix.innerHTML = `Prix : ${product.prix} €`; // Added € symbol
 
         const button = document.createElement('button');
         button.className = 'btn btn-cart-cute';
         button.innerHTML = '<i class="bi bi-cart-plus"></i> Ajouter au panier';
         button.setAttribute('data-id', product.id);
 
-        button.addEventListener('click', () => {
-          const productId = button.getAttribute('data-id');
-          addToCart(parseInt(productId));
-        });
+        // REMOVED THE MANUAL EVENT LISTENER - Let the event delegation handle it
+        // The event delegation in script.js will automatically handle clicks
 
         // Button See the product
         const viewBtn = document.createElement('a');
         viewBtn.href = `?page=product&id=${index}`;
         viewBtn.className = 'btn btn-view-cute ms-2';
         viewBtn.textContent = 'Voir le produit';
-
-
 
         // Assemble card
         premierDiv.appendChild(dousiemeDiv);
@@ -177,9 +172,7 @@ function loadCatalogueProducts() {
     })
     .catch(error => {
       console.error("Erreur lors du chargement des produits :", error);
-    
     });
-    
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -190,163 +183,293 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-            // FUNCTION TO SAVE PANIER
-
-function getCart() {
-  return JSON.parse(localStorage.getItem('cart')) || [];
-}
-
-function saveCart(cart) {
-  localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-function addToCart(productId) {
-  let cart = getCart();
-
-  const existingItem = cart.find(item => item.id === productId);
-  if (existingItem) {
-    existingItem.qtt += 1;
-  } else {
-    cart.push({ id: productId, qtt: 1 });
-  }
-
-  saveCart(cart);
-  updateCartCount(); // Update UI
-}
-
-function updateCartCount() {
-  const cart = getCart();
-  const totalItems = cart.reduce((sum, item) => sum + item.qtt, 0);
-  document.getElementById('cart-count').textContent = totalItems;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  updateCartCount();
-});
-
- const cart = getCart(); // from earlier
-
-  fetch('products.json')
-    .then(res => res.json())
-    .then(products => {
-      const content = document.getElementById('cart-content');
-      cart.forEach(item => {
-        const product = products.find(p => p.id === item.id);
-        const div = document.createElement('div');
-        div.innerHTML = `${product.nom} x ${item.qtt}`;
-        content.appendChild(div);
-      });
-    });
 
 
+
+ // AJAX Cart Management Functions
+function makeAjaxRequest(url, data, callback) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     
-
-function getCart() {
-  return JSON.parse(localStorage.getItem('cart')) || [];
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    callback(response);
+                } catch (e) {
+                    console.error('Error parsing JSON:', e);
+                    callback({ success: false, message: 'Invalid response' });
+                }
+            } else {
+                callback({ success: false, message: 'Server error' });
+            }
+        }
+    };
+    
+    // Convert data object to URL-encoded string
+    const params = Object.keys(data).map(key => 
+        encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
+    ).join('&');
+    
+    xhr.send(params);
 }
 
-function saveCart(cart) {
-  localStorage.setItem('cart', JSON.stringify(cart));
+function getCart(callback) {
+    makeAjaxRequest('?page=cart_handler', { action: 'get' }, callback);
 }
 
-function updateCartPage() {
-  const cart = getCart();
-  const container = document.getElementById('cart-list');
-  container.innerHTML = '';
+function addToCart(productId, callback) {
+    makeAjaxRequest('?page=cart_handler', { 
+        action: 'add', 
+        productId: productId 
+    }, callback);
+}
 
-  if (cart.length === 0) {
-    container.innerHTML = '<p class="text-muted text-center">Votre panier est vide 🧺</p>';
-    document.getElementById('total-price').textContent = 'Total : 0 €';
-    return;
-  }
+function updateCartItem(productId, quantity, callback) {
+    makeAjaxRequest('?page=cart_handler', { 
+        action: 'update', 
+        productId: productId, 
+        quantity: quantity 
+    }, callback);
+}
 
-  fetch('products.json')
-    .then(res => res.json())
-    .then(products => {
-      let total = 0;
+function removeFromCart(productId, callback) {
+    makeAjaxRequest('?page=cart_handler', { 
+        action: 'remove', 
+        productId: productId 
+    }, callback);
+}
 
-      cart.forEach(item => {
-        const product = products.find(p => p.id === item.id);
-        if (!product) return;
+function clearCart(callback) {
+    makeAjaxRequest('?page=cart_handler', { action: 'clear' }, callback);
+}
 
-        const productTotal = product.prix * item.qtt;
-        total += productTotal;
+function getCartCount(callback) {
+    makeAjaxRequest('?page=cart_handler', { action: 'count' }, callback);
+}
 
-        const card = document.createElement('div');
-        card.className = 'd-flex align-items-start p-3 rounded-4 shadow-sm border cute-cart-item flex-wrap';
-
-        card.innerHTML = `
-          <img src="${product.image}" alt="${product.nom}" class="rounded me-3 mb-3 mb-md-0" style="width: 120px; height: auto; object-fit: cover;" />
-          <div class="flex-grow-1">
-            <h5 class="fw-semibold">
-                <a href="?page=product&id=${product.id}" class="text-cute text-decoration-none">${product.nom}</a>
-            </h5>
-            <div class="d-flex align-items-center gap-2 my-2">
-              <button class="btn btn-sm btn-outline-secondary rounded-circle px-2 py-1 minus-btn" data-id="${product.id}">-</button>
-              <span class="badge bg-light text-dark px-3 py-2 quantity-badge" data-id="${product.id}">${item.qtt}</span>
-              <button class="btn btn-sm btn-outline-secondary rounded-circle px-2 py-1 plus-btn" data-id="${product.id}">+</button>
-              <button class="btn btn-sm btn-outline-danger ms-3 delete-btn" data-id="${product.id}">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-            <p class="mb-0 text-muted small">Prix unitaire : ${product.prix.toFixed(2)} €</p>
-            <p class="mb-0 fw-bold text-primary">Total : ${productTotal.toFixed(2)} €</p>
-          </div>
-        `;
-
-        container.appendChild(card);
-      });
-
-      document.getElementById('total-price').textContent = `Total : ${total.toFixed(2)} €`;
-
-      // Interactions
-      document.querySelectorAll('.plus-btn').forEach(btn => {
-        btn.addEventListener('click', () => changeQuantity(btn.dataset.id, 1));
-      });
-      document.querySelectorAll('.minus-btn').forEach(btn => {
-        btn.addEventListener('click', () => changeQuantity(btn.dataset.id, -1));
-      });
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', () => removeItem(btn.dataset.id));
-      });
+// Update cart count in header
+function updateCartCount() {
+    getCartCount(function(response) {
+        if (response.success) {
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = response.count;
+            }
+        }
     });
 }
 
-function changeQuantity(id, delta) {
-  const cart = getCart();
-  const item = cart.find(i => i.id == id);
-  if (item) {
-    item.qtt += delta;
-    if (item.qtt <= 0) {
-      const index = cart.indexOf(item);
-      cart.splice(index, 1);
-    }
-    saveCart(cart);
-    updateCartPage();
+// Add product to cart with AJAX
+function handleAddToCart(productId, callback) {
+    addToCart(productId, function(response) {
+        if (response.success) {
+            updateCartCount();
+            // Show success message (optional)
+            showMessage('Produit ajouté au panier !', 'success');
+        } else {
+            showMessage('Erreur: ' + response.message, 'error');
+        }
+        
+        // Call the callback if provided
+        if (callback && typeof callback === 'function') {
+            callback(response);
+        }
+    });
+}
 
-    // Bounce animation
+// Optional: Show messages to user
+function showMessage(message, type) {
+    // Create a simple toast notification
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
+    toast.style.top = '20px';
+    toast.style.right = '20px';
+    toast.style.zIndex = '9999';
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
+    
     setTimeout(() => {
-      const badge = document.querySelector(`.quantity-badge[data-id="${id}"]`);
-      if (badge) {
-        badge.classList.remove('bounce'); // reset animation if already there
-        void badge.offsetWidth; // trick to restart animation
-        badge.classList.add('bounce');
-      }
-    }, 50);
-  }
+        toast.remove();
+    }, 3000);
 }
 
-
-function removeItem(id) {
-  let cart = getCart();
-  cart = cart.filter(i => i.id != id);
-  saveCart(cart);
-  updateCartPage();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('cart-list')) {
-    updateCartPage();
-  }
+// Event delegation for dynamically created buttons
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('btn-cart-cute') || e.target.closest('.btn-cart-cute')) {
+        e.preventDefault();
+        const button = e.target.classList.contains('btn-cart-cute') ? e.target : e.target.closest('.btn-cart-cute');
+        const productId = parseInt(button.getAttribute('data-id'));
+        
+        if (productId) {
+            handleAddToCart(productId);
+        }
+    }
 });
 
+// Update cart page display
+function updateCartPage() {
+    const container = document.getElementById('cart-list');
+    if (!container) return; // Not on cart page
+    
+    container.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"></div></div>';
+    
+    getCart(function(cartResponse) {
+        if (!cartResponse.success) {
+            container.innerHTML = '<p class="text-danger text-center">Erreur lors du chargement du panier</p>';
+            return;
+        }
+        
+        const cart = cartResponse.cart;
+        container.innerHTML = '';
+        
+        if (cart.length === 0) {
+            container.innerHTML = '<p class="text-muted text-center">Votre panier est vide 🧺</p>';
+            document.getElementById('total-price').textContent = 'Total : 0 €';
+            return;
+        }
+        
+        // Fetch products data
+        fetch('products.json')
+            .then(res => res.json())
+            .then(products => {
+                let total = 0;
+                
+                cart.forEach(item => {
+                    const product = products.find(p => p.id === item.id);
+                    if (!product) return;
+                    
+                    const itemTotal = product.prix * item.qtt;
+                    total += itemTotal;
+                    
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'card mb-3';
+                    cartItem.innerHTML = `
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <img src="${product.image}" alt="${product.nom}" class="img-fluid rounded">
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="card-title">${product.nom}</h5>
+                                    <p class="text-muted">${product.prix} €</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-secondary btn-decrease" data-id="${product.id}" type="button">-</button>
+                                        <input type="number" class="form-control text-center quantity-input" value="${item.qtt}" min="1" data-id="${product.id}">
+                                        <button class="btn btn-outline-secondary btn-increase" data-id="${product.id}" type="button">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>${itemTotal.toFixed(2)} €</strong>
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-outline-danger btn-remove" data-id="${product.id}">×</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(cartItem);
+                });
+                
+                document.getElementById('total-price').textContent = `Total : ${total.toFixed(2)} €`;
+                
+                // Add event listeners for cart item controls
+                addCartItemEventListeners();
+            })
+            .catch(error => {
+                console.error('Error loading products:', error);
+                container.innerHTML = '<p class="text-danger text-center">Erreur lors du chargement des produits</p>';
+            });
+    });
+}
+
+// Add event listeners for cart item controls
+function addCartItemEventListeners() {
+    // Quantity increase buttons
+    document.querySelectorAll('.btn-increase').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const productId = parseInt(this.getAttribute('data-id'));
+            const input = document.querySelector(`.quantity-input[data-id="${productId}"]`);
+            const newQuantity = parseInt(input.value) + 1;
+            
+            updateCartItem(productId, newQuantity, function(response) {
+                if (response.success) {
+                    updateCartPage();
+                    updateCartCount();
+                }
+            });
+        });
+    });
+    
+    // Quantity decrease buttons
+    document.querySelectorAll('.btn-decrease').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const productId = parseInt(this.getAttribute('data-id'));
+            const input = document.querySelector(`.quantity-input[data-id="${productId}"]`);
+            const newQuantity = Math.max(1, parseInt(input.value) - 1);
+            
+            updateCartItem(productId, newQuantity, function(response) {
+                if (response.success) {
+                    updateCartPage();
+                    updateCartCount();
+                }
+            });
+        });
+    });
+    
+    // Manual quantity input
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', function() {
+            const productId = parseInt(this.getAttribute('data-id'));
+            const newQuantity = Math.max(1, parseInt(this.value));
+            
+            updateCartItem(productId, newQuantity, function(response) {
+                if (response.success) {
+                    updateCartPage();
+                    updateCartCount();
+                }
+            });
+        });
+    });
+    
+    // Remove item buttons
+    document.querySelectorAll('.btn-remove').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const productId = parseInt(this.getAttribute('data-id'));
+            
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+                removeFromCart(productId, function(response) {
+                    if (response.success) {
+                        updateCartPage();
+                        updateCartCount();
+                    }
+                });
+            }
+        });
+    });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCount();
+    
+    // If we're on the cart page, load cart contents
+    if (document.getElementById('cart-list')) {
+        updateCartPage();
+    }
+});
+
+// Your existing dynamic content creation code can stay the same
+// Just make sure the buttons have the class 'btn-cart-cute' and data-id attribute
+// Example:
+/*
+const button = document.createElement('button');
+button.className = 'btn btn-cart-cute';
+button.innerHTML = '<i class="bi bi-cart-plus"></i> Ajouter au panier';
+button.setAttribute('data-id', product.id);
+*/
