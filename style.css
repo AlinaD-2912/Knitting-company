@@ -174,3 +174,19 @@
   color: red;
   margin-left: 2px;
 }
+
+
+.btn-submit-cute {
+  background-color: #ffe082;
+  color: #3f3f3f;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1.2rem;
+  font-family: 'Quicksand', sans-serif;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.btn-submit-cute:hover {
+  background-color: #ffd54f;
+  color: #000;
+}
