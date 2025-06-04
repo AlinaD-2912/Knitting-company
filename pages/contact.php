@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   // Si tout est OK, on envoie l'email
   if (empty($errors)) {
-    $to = 'votre@email.com';
+    $to = 'dvornyk.alina2912@gmail.com';
     $subject = "Contact ($motif)";
     $body = "Nom: $nom $prenom\nEmail: $email\nDestinataire: $destinataire\nMotif: $motif\nMessage:\n$message";
     $headers = "From: $email";
