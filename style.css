@@ -175,6 +175,7 @@
   margin-left: 2px;
 }
 
+                /* BUTTON SUBMIT CONTACT */
 
 .btn-submit-cute {
   background-color: #ffe082;
@@ -190,3 +191,51 @@
   background-color: #ffd54f;
   color: #000;
 }
+
+                /* LES ELEMENTS DE PANIER */
+/* .text-cute {
+  color: #5e60ce;
+  font-family: 'Comic Neue', 'Poppins', sans-serif;
+}
+
+.product-cute {
+  background: linear-gradient(145deg, #f9f6ff, #eaf6ff);
+  border-radius: 2rem;
+  padding: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-cute:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(120, 120, 200, 0.2);
+}
+
+.btn-cart-cute {
+  background: linear-gradient(to right, #a5d8ff, #cdb4db);
+  color: white;
+  border-radius: 2rem;
+  border: none;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  transition: 0.3s;
+}
+
+.btn-cart-cute:hover {
+  background: linear-gradient(to right, #cdb4db, #a5d8ff);
+  transform: scale(1.05);
+}
+
+.btn-view-cute {
+  background: linear-gradient(to right, #ffd6e0, #d0f4de);
+  color: #333;
+  border-radius: 2rem;
+  border: none;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  transition: 0.3s;
+}
+
+.btn-view-cute:hover {
+  background: linear-gradient(to right, #d0f4de, #ffd6e0);
+  transform: scale(1.05);
+} */
