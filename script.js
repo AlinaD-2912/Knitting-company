@@ -1,4 +1,4 @@
-function loadProductsForHome() {
+function loadHomeProducts() {
   fetch('products.json')
     .then(response => response.json())
     .then(products => {
@@ -9,7 +9,7 @@ function loadProductsForHome() {
       productGrid.id = 'home-products';
       productGrid.className = 'd-flex flex-wrap justify-content-center gap-3';
 
-      products.forEach(product => {
+      products.forEach((product, index) => {
         // Card container
         const card = document.createElement('div');
         card.className = 'card product-cute';
@@ -34,7 +34,7 @@ function loadProductsForHome() {
         desc.className = 'card-text';
         desc.textContent = product.description;
 
-        // Button
+        // Button ajouter au panier
         const button = document.createElement('button');
         button.className = 'btn btn-cart-cute';
         button.innerHTML = '<i class="bi bi-cart-plus"></i> Ajouter au panier';
@@ -45,10 +45,19 @@ function loadProductsForHome() {
           addToCart(parseInt(productId));
         });
 
+        // Button See the product
+        const viewBtn = document.createElement('a');
+        viewBtn.href = `?page=product&id=${index}`;
+        viewBtn.className = 'btn btn-view-cute ms-2';
+        viewBtn.textContent = 'Voir le produit';
+
+
+
         // Assemble card
         cardBody.appendChild(title);
         cardBody.appendChild(desc);
         cardBody.appendChild(button);
+        cardBody.appendChild(viewBtn);
         card.appendChild(cardBody);
         productGrid.appendChild(card);
       });
@@ -61,7 +70,15 @@ function loadProductsForHome() {
     });
 }
 
-loadProductsForHome()
+document.addEventListener('DOMContentLoaded', () => {
+  const containerHome = document.getElementById('containerHome');
+  if (containerHome) {
+    loadHomeProducts(); // ✅ no parameter needed
+  }
+});
+
+
+
 
 
 let cartCount = 0;

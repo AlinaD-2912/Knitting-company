@@ -75,7 +75,7 @@
 .product-cute .card-img-top {
   border-radius: 20px 20px 0 0;
 }
-
+                              /* BUTTON AJOUTER AU PANIER */
 .btn-cart-cute {
   background-color: #ffe082;
   color: #3f3f3f;
@@ -99,4 +99,72 @@
   font-weight: bold;
   margin-left: 6px;
   vertical-align: top;
+}
+
+
+                          /* BUTTON   SEE  MORE */
+.cute-button-wrapper {
+  margin-bottom: 3rem;
+}
+
+.cute-stars {
+  font-size: 1.5rem;
+  color: #7ccbb7; /* soft minty green */
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.3rem;
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.btn-catalogue-mint-cute {
+  background: linear-gradient(135deg, #d1f8e2, #b3edd1);
+  color: #336d5c;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  font-family: 'Comic Neue', cursive;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(144, 238, 208, 0.4);
+  margin-bottom: 1rem;
+}
+
+.btn-catalogue-mint-cute:hover {
+  background: linear-gradient(135deg, #c0f0d6, #a8e6c8);
+  color: #245547;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(144, 238, 208, 0.5);
+}
+
+                        /* BUTTON SEE THE PRODUCT */
+                        .btn-view-cute {
+  background: linear-gradient(135deg, #e0f9f2, #c3f0e2);
+  color: #2f6e61;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.45rem 1.2rem;
+  font-weight: 600;
+  font-family: 'Comic Neue', cursive;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(144, 238, 208, 0.4);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-view-cute:hover {
+  background: linear-gradient(135deg, #c4efe2, #b0e6d6);
+  color: #20594f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(144, 238, 208, 0.5);
 }
