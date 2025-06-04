@@ -168,3 +168,9 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 12px rgba(144, 238, 208, 0.5);
 }
+
+                        /* CONTACT RED */
+.required-mark {
+  color: red;
+  margin-left: 2px;
+}
