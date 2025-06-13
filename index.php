@@ -119,7 +119,6 @@ switch ($page) {
     include 'pages/home.php';
     break;
   default:
-    // tells the browser the page not found
     http_response_code(404);
     include 'pages/404.php';
     break;
