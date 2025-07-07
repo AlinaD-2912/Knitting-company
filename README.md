@@ -8,7 +8,7 @@ Créer un site dynamique conçu en PHP, structuré autour d’un système de fro
 - **Panier** :
 - **A propos** :
 ## Site en ligne
-[Accéder au site]([https://knitting-company.infy.uk])
+[Accéder au site](https://knitting-company.infy.uk)
 ## Technologies utilisées
 - PHP
 - CSS
